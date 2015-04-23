@@ -10,6 +10,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     private DashTillPuffRenderThread    renderThread;
     Background bg;
     Trajectory traj;
+    Ship ship;
 
     public DashTillPuffSurfaceView(Context context) {
         super(context);
@@ -23,9 +24,9 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         //...
         // Create the sliding background , cosmic factory , trajectory
         // and the space ship
-        //bg = new ();
         traj = new Trajectory(this);
         bg = new Background(this);
+        ship = new Ship(this.getWidth()/4,this.getHeight()/4, this);
         //...
     }
 
@@ -45,8 +46,10 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN: // Thrust the space ship up .
+                ship.setDy(-15);
                 break;
             case MotionEvent.ACTION_UP: // Let space ship fall freely .
+                ship.setDy(0);
                 break;
         }
         return true;
@@ -57,7 +60,8 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         super.onDraw(c);
         // Draw everything ( restricted to the displayed rectangle ) .
         bg.draw(c);
-        //traj.draw(c);
+        traj.draw(c);
+        ship.draw(c);
     }
 
     @Override
@@ -65,7 +69,8 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         // Tick background , space ship , cosmic factory , and trajectory .
         // Draw everything ( restricted to the displayed rectangle ) .
         bg.tick(c);
-        //traj.tick(c);
+        traj.tick(c);
+        ship.tick(c);
     }
 
 }
