@@ -10,30 +10,54 @@ import android.graphics.Rect;
 public class Background implements TimeConscious {
 
     private final DashTillPuffSurfaceView   view;
-    public  int                             x1;
-    public  int                             x2;
-    public  int                             y1;
-    public  int                             y2;
+    public  int                             x1, X1;
+    public  int                             x2, X2;
+    public  int                             y1, Y1;
+    public  int                             y2, Y2;
+    public  int                             width, height;
 
     public Background ( DashTillPuffSurfaceView view ) {
         this.view = view;
+        this.width = view.getWidth();
+        this.height = view.getHeight();
         this.x1 = 0;
-        this.x2 = view.getWidth();
+        this.x2 = width;
         this.y1 = 0;
-        this.y2 = view.getHeight();
+        this.y2 = height;
+        this.X1 = this.x2;
+        this.X2 = this.X1 + width;
+        this.Y1 = 0;
+        this.Y2 = height;
+
     }
 
     public void tick( Canvas canvas ) {
+        this.x1 -= 20;
+        this.x2 -= 20;
+        this.X1 -= 20;
+        this.X2 -= 20;
+        if (this.x2 <= 0) {
+            this.x1 = this.X2;
+            this.x2 = this.x1 + width;
+        }
+        if (this.X2 <= 0) {
+            this.X1 = this.x2;
+            this.X2 = this.X1 + width;
+        }
         draw (canvas);
     }
 
     protected void draw ( Canvas c ) {
         BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffwallpaper, options);
+        Bitmap bitmap1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffwallpaper, options);
+        Bitmap bitmap2 = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffwallpaper, options);
 
-        Paint paint = new Paint() ;
+        Paint paint = new Paint();
         paint.setAlpha(255); // Control transparency
-        Rect dst = new Rect( x1 , y1 , x2 , y2 ) ; // Where to draw .
-        c.drawBitmap ( bitmap, null, dst, paint );
+        Rect dst1 = new Rect( x1, y1, x2, y2 ); // Where to draw .
+        Rect dst2 = new Rect( X1, Y1, X2, Y2 );
+        c.drawBitmap ( bitmap1, null, dst1, paint );
+        c.drawBitmap ( bitmap2, null, dst2, paint );
+
     }
 }
