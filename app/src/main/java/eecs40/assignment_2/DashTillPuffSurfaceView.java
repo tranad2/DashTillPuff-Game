@@ -57,7 +57,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         super.onDraw(c);
         // Draw everything ( restricted to the displayed rectangle ) .
         bg.draw(c);
-        traj.draw(c);
+        //traj.draw(c);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         // Tick background , space ship , cosmic factory , and trajectory .
         // Draw everything ( restricted to the displayed rectangle ) .
         bg.tick(c);
-        traj.tick(c);
+        //traj.tick(c);
     }
 
 }
