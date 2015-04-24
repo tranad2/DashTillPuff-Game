@@ -1,8 +1,5 @@
 package eecs40.assignment_2;
 
-/**
- * Created by Alex on 4/23/2015.
- */
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -12,44 +9,72 @@ import android.graphics.Rect;
 
 public class Ship implements TimeConscious{
 
-    Bitmap bitmapShip;
-    float x, y, width, height;
-    float dy;
-    float gravity = 10f;
-    Rect rec;
+    DashTillPuffSurfaceView view;
+    Bitmap                  bitmapShip;
+    int                     x1, y1, x2, y2, shipWidth, shipHeight, screenWidth, screenHeight;
+    float                   dy;
+    float                   gravity = 3;
+    boolean                 touchFlag;
+    Rect                    dst;
 
-    public Ship(int x, int y, DashTillPuffSurfaceView view){
+    public Ship(DashTillPuffSurfaceView view){
+        //Load ship bitmap
         BitmapFactory.Options options = new BitmapFactory.Options();
         bitmapShip = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffspaceship, options);
-        width = bitmapShip.getWidth();
-        height = bitmapShip.getHeight();
-        bitmapShip = Bitmap.createScaledBitmap(bitmapShip, (int)width/2, (int)height/2, true);
-        width/=2;
-        height/=2;
-        this.x = x;
-        this.y = y;
-        rec = new Rect((int)x,(int)y,(int)(x+width),(int)(y+height));
+
+        //Scale ship bitmap
+        shipWidth       = bitmapShip.getWidth() / 2;
+        shipHeight      = bitmapShip.getHeight() / 2;
+        bitmapShip  = Bitmap.createScaledBitmap(bitmapShip, shipWidth, shipHeight, true);
+
+        //Initialize ship position
+        this.x1 = view.getWidth()/4;
+        this.y1 = view.getHeight()/2;
+        this.x2 = this.x1 + shipWidth;
+        this.y2 = this.y1 + shipHeight;
+        dst = new Rect( x1, y1, x2, y2 );
+
+        screenWidth = view.getWidth();
+        screenHeight = view.getHeight();
+        touchFlag = false;
     }
 
-    public void setLocation(float xPos, float yPos){
-        this.x = xPos;
-        this.y = yPos;
-        rec.set((int)x,(int)y,(int)(x+width),(int)(y+height));
-    }
-
-    public void setDy(float yVel){
-        dy = yVel;
+    public void setLocation(int xPos, int yPos) {
+        this.x1 = xPos;
+        this.y1 = yPos;
+        this.x2 = this.x1 + shipWidth;
+        this.y2 = this.y1 + shipHeight;
+        dst.set(x1, y1, x2, y2);
     }
 
     public void tick(Canvas c){
-        y+=(dy+gravity);
-        setLocation(x,y);
-        draw(c);
-    }
+        //Thrusters
+        if ( touchFlag ) {
+            y1 += dy * 1.1;
+            dy -= gravity;
+        }
+        //Gravity
+        else {
+            y1 += dy * 1.1;
+            dy += gravity;
+        }
 
+        //Keep ship on screen
+        if ( y1 > screenHeight - shipHeight ) {     //Bottom bound
+            y1 = screenHeight - shipHeight;
+            dy = 0;
+        }
+        else if ( y1 < 0 ) {                        //Top bound
+            y1 = 0;
+            dy = 0;
+        }
+
+        setLocation( x1, y1 );
+        draw( c );
+    }
 
     public void draw(Canvas c){
         Paint paint = new Paint();
-        c.drawBitmap ( bitmapShip, null, rec, paint );
+        c.drawBitmap ( bitmapShip, null, dst, paint );
     }
 }

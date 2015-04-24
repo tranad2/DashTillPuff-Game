@@ -26,7 +26,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         // and the space ship
         traj = new Trajectory(this);
         bg = new Background(this);
-        ship = new Ship(this.getWidth()/4,this.getHeight()/4, this);
+        ship = new Ship(this);
         //...
     }
 
@@ -46,10 +46,10 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN: // Thrust the space ship up .
-                ship.setDy(-15);
+                ship.touchFlag = true;
                 break;
             case MotionEvent.ACTION_UP: // Let space ship fall freely .
-                ship.setDy(0);
+                ship.touchFlag = false;
                 break;
         }
         return true;

@@ -9,7 +9,7 @@ import android.graphics.Rect;
 
 public class Background implements TimeConscious {
 
-    private final DashTillPuffSurfaceView   view;
+    DashTillPuffSurfaceView                 view;
     Bitmap                                  bitmap1, bitmap2;
     public  int                             x1, X1;
     public  int                             x2, X2;
@@ -35,10 +35,10 @@ public class Background implements TimeConscious {
     }
 
     public void tick( Canvas canvas ) {
-        this.x1 -= 10;
-        this.x2 -= 10;
-        this.X1 -= 10;
-        this.X2 -= 10;
+        this.x1 -= 20;
+        this.x2 -= 20;
+        this.X1 -= 20;
+        this.X2 -= 20;
         if (this.x2 <= 0) {
             this.x1 = this.X2;
             this.x2 = this.x1 + width;
