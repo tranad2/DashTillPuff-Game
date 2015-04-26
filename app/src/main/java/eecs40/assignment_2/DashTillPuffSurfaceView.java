@@ -24,8 +24,8 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         //...
         // Create the sliding background , cosmic factory , trajectory
         // and the space ship
-        traj = new Trajectory(this);
         bg = new Background(this);
+        traj = new Trajectory(this);
         ship = new Ship(this);
         //...
     }
@@ -68,6 +68,14 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     public void tick(Canvas c) {
         // Tick background , space ship , cosmic factory , and trajectory .
         // Draw everything ( restricted to the displayed rectangle ) .
+
+        // Lag debug
+        /*Paint paint = new Paint () ;
+        paint.setStyle ( Paint. Style . FILL ) ;
+        paint.setColor ( Color. WHITE ) ;
+        paint.setAntiAlias ( true ) ;
+        c.drawPaint ( paint ) ;*/
+
         bg.tick(c);
         traj.tick(c);
         ship.tick(c);

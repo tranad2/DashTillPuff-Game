@@ -5,7 +5,7 @@ import android.view.SurfaceHolder;
 
 public class DashTillPuffRenderThread extends Thread {
     DashTillPuffSurfaceView view;
-    private static final int FRAME_PERIOD = 2; // In ms
+    private static final int FRAME_PERIOD = 5; // In ms
 
     public DashTillPuffRenderThread ( DashTillPuffSurfaceView view ) {
         this.view = view;
@@ -22,7 +22,7 @@ public class DashTillPuffRenderThread extends Thread {
                     view.tick ( c );
                 }
             } catch ( Exception e ) {
-                e.getStackTrace();
+                //e.getStackTrace();
             } finally {
                 if ( c != null ) {
                     sh.unlockCanvasAndPost( c );

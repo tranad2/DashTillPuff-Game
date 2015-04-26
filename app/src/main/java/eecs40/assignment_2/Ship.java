@@ -21,8 +21,8 @@ public class Ship implements TimeConscious{
         bitmapShip = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffspaceship, options);
 
         //Scale ship bitmap
-        shipWidth       = bitmapShip.getWidth() / 3;
-        shipHeight      = bitmapShip.getHeight() / 3;
+        shipWidth   = bitmapShip.getWidth() / 3;
+        shipHeight  = bitmapShip.getHeight() / 3;
         bitmapShip  = Bitmap.createScaledBitmap(bitmapShip, shipWidth, shipHeight, true);
 
         //Initialize ship position
@@ -45,6 +45,7 @@ public class Ship implements TimeConscious{
         dst.set(x1, y1, x2, y2);
     }
 
+    @Override
     public void tick( Canvas c ){
         //Thrusters
         if ( touchFlag ) {

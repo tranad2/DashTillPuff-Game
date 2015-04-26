@@ -9,31 +9,30 @@ import android.graphics.Rect;
 
 public class Background implements TimeConscious {
 
-    Bitmap                  bitmap1, bitmap2;
+    Bitmap                  bitmap;
+    BitmapFactory.Options options = new BitmapFactory.Options();
     public  int             x1, X1;
     public  int             x2, X2;
     public  int             y1, Y1;
     public  int             y2, Y2;
-    public  int             width, height;
+    public  int             screenWidth, screenHeight;
     Rect                    dst1, dst2;
 
     public Background ( DashTillPuffSurfaceView view ) {
         //Load background bitmap
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        this.bitmap1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffwallpaper, options);
-        this.bitmap2 = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffwallpaper, options);
+        this.bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffwallpaper, options);
 
         //Initialize background position
-        this.width = view.getWidth();
-        this.height = view.getHeight();
+        screenWidth = view.getWidth();
+        screenHeight = view.getHeight();
         this.x1 = 0;
-        this.x2 = width;
+        this.x2 = screenWidth;
         this.y1 = 0;
-        this.y2 = height;
+        this.y2 = screenHeight;
         this.X1 = this.x2;
-        this.X2 = this.X1 + width;
+        this.X2 = this.X1 + screenWidth;
         this.Y1 = 0;
-        this.Y2 = height;
+        this.Y2 = screenHeight;
         dst1 = new Rect( x1, y1, x2, y2 ); // Where to draw .
         dst2 = new Rect( X1, Y1, X2, Y2 );
     }
@@ -59,11 +58,11 @@ public class Background implements TimeConscious {
         this.X2 -= 30;
         if (this.x2 <= 0) {
             this.x1 = this.X2;
-            this.x2 = this.x1 + width;
+            this.x2 = this.x1 + screenWidth;
         }
         else if (this.X2 <= 0) {
             this.X1 = this.x2;
-            this.X2 = this.X1 + width;
+            this.X2 = this.X1 + screenWidth;
         }
         setLocation( x1, y1, x2, y2, X1, Y1, X2, Y2);
         draw (canvas);
@@ -71,7 +70,7 @@ public class Background implements TimeConscious {
 
     protected void draw ( Canvas c ) {
         Paint paint = new Paint();
-        c.drawBitmap ( bitmap1, null, dst1, paint );
-        c.drawBitmap ( bitmap2, null, dst2, paint );
+        c.drawBitmap ( bitmap, null, dst1, paint );
+        c.drawBitmap ( bitmap, null, dst2, paint );
     }
 }
