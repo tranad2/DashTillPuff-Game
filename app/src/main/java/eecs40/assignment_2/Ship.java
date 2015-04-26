@@ -2,29 +2,27 @@ package eecs40.assignment_2;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Ship implements TimeConscious{
 
-    DashTillPuffSurfaceView view;
     Bitmap                  bitmapShip;
     int                     x1, y1, x2, y2, shipWidth, shipHeight, screenWidth, screenHeight;
     float                   dy;
-    float                   gravity = 3;
+    float                   gravity = 10;
     boolean                 touchFlag;
     Rect                    dst;
 
-    public Ship(DashTillPuffSurfaceView view){
+    public Ship( DashTillPuffSurfaceView view ){
         //Load ship bitmap
         BitmapFactory.Options options = new BitmapFactory.Options();
         bitmapShip = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffspaceship, options);
 
         //Scale ship bitmap
-        shipWidth       = bitmapShip.getWidth() / 2;
-        shipHeight      = bitmapShip.getHeight() / 2;
+        shipWidth       = bitmapShip.getWidth() / 3;
+        shipHeight      = bitmapShip.getHeight() / 3;
         bitmapShip  = Bitmap.createScaledBitmap(bitmapShip, shipWidth, shipHeight, true);
 
         //Initialize ship position
@@ -39,7 +37,7 @@ public class Ship implements TimeConscious{
         touchFlag = false;
     }
 
-    public void setLocation(int xPos, int yPos) {
+    public void setLocation( int xPos, int yPos ) {
         this.x1 = xPos;
         this.y1 = yPos;
         this.x2 = this.x1 + shipWidth;
@@ -47,15 +45,15 @@ public class Ship implements TimeConscious{
         dst.set(x1, y1, x2, y2);
     }
 
-    public void tick(Canvas c){
+    public void tick( Canvas c ){
         //Thrusters
         if ( touchFlag ) {
-            y1 += dy * 1.1;
+            y1 += dy * 0.35;
             dy -= gravity;
         }
         //Gravity
         else {
-            y1 += dy * 1.1;
+            y1 += dy * 0.35;
             dy += gravity;
         }
 
@@ -73,7 +71,7 @@ public class Ship implements TimeConscious{
         draw( c );
     }
 
-    public void draw(Canvas c){
+    protected void draw( Canvas c ){
         Paint paint = new Paint();
         c.drawBitmap ( bitmapShip, null, dst, paint );
     }

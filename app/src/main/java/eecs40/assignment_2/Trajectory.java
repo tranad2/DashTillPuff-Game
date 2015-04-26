@@ -17,7 +17,7 @@ public class Trajectory implements TimeConscious {
     private ArrayList<Point2D> points = new ArrayList<>();
     private float screenWidth;
     private float screenHeight;
-    private float dx=-20f;  //x-velocity of screen
+    private float dx=-30f;  //x-velocity of screen
 
     public Trajectory(View view){
         screenWidth = view.getWidth();
@@ -30,7 +30,7 @@ public class Trajectory implements TimeConscious {
         // discard those points that have crossed the entire
         // span of the screen .
 
-        float OFFSET = screenWidth/5;
+        float OFFSET = screenWidth/3;
         if(points.isEmpty()){
             //Initialize first point
             points.add(new Point2D(screenWidth/2,screenHeight/2));
