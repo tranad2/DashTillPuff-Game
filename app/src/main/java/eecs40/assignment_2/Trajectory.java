@@ -1,6 +1,7 @@
 package eecs40.assignment_2;
 
 import android.graphics.Canvas;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.view.View;
@@ -73,6 +74,7 @@ public class Trajectory implements TimeConscious {
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.MAGENTA);
         paint.setStrokeWidth(10);
+        paint.setPathEffect(new DashPathEffect(new float[] {100,50}, 0));
         paint.setAlpha(255);
         paint.setAntiAlias(true);
         c.drawPath( path, paint );
