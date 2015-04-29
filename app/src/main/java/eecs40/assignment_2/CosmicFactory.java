@@ -99,7 +99,7 @@ public class CosmicFactory implements TimeConscious {
                     if(OFFSET>0){
                         ranY = ran.nextInt(Math.abs(screenWidth-mScaledHeight-(int)yLine))+mScaledHeight;
                     } else if(OFFSET<0){
-                        ranY = ran.nextInt(Math.abs((int)yLine+mScaledHeight))+mScaledHeight;
+                        ranY = ran.nextInt(Math.abs((int)yLine))+mScaledHeight;
                     }
 
                     float yPos = yLine+Math.signum(OFFSET)*ranY; //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
@@ -107,7 +107,8 @@ public class CosmicFactory implements TimeConscious {
                     newClus.add(new Cluster(type, (int) xPos, (int) yPos, sv));
                 }
                 clusterList.add(newClus);
-                OFFSET *= -1;   //Alternate between top and bottom of line
+                Log.v(TAG,"newClus"+newClus);
+            OFFSET *= -1;   //Alternate between top and bottom of line
 
         }
 

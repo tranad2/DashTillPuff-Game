@@ -98,10 +98,10 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
             c.drawText("Tap anywhere to start",getWidth()/2, getHeight()/2, paint);
         }
         else {
-            drawScore(c);
             traj.tick(c);
             cos.tick(c);
             ship.tick(c);
+            drawScore(c);
             score++;
         }
     }
