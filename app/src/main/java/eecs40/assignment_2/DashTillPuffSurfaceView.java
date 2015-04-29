@@ -14,6 +14,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     Background bg;
     Trajectory traj;
     Ship ship;
+    CosmicFactory cos;
     boolean startFlag = false;
     int score;
 
@@ -32,6 +33,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         bg = new Background(this);
         traj = new Trajectory(this);
         ship = new Ship(this);
+        cos = new CosmicFactory(traj, this);
         //...
     }
 
@@ -69,6 +71,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         bg.draw(c);
         if ( startFlag ) {
             traj.draw(c);
+            cos.draw(c);
             ship.draw(c);
         }
     }
@@ -97,6 +100,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         else {
             drawScore(c);
             traj.tick(c);
+            cos.tick(c);
             ship.tick(c);
             score++;
         }
