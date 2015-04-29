@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
+import android.view.animation.ScaleAnimation;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -81,7 +82,7 @@ public class CosmicFactory implements TimeConscious {
         // ( e . g . , stars , clouds , planets , etc .) . So all objects in
         // a cluster are of the same type .
         //...
-        Log.v(TAG,""+bitmapList.size());
+
         if(!(traj.getPoints().isEmpty()) && traj.getPoints().size()>1 && (4*screenWidth/3)-traj.getPoints().get(traj.getPoints().size()-1).x>=screenWidth/5) {
             //Log.v(TAG,"CONDITION");
                 ArrayList<Cluster> newClus = new ArrayList<>();
@@ -96,12 +97,20 @@ public class CosmicFactory implements TimeConscious {
                     float xPos = ran.nextInt((int) p2.x - (int) p1.x) + p1.x; //Get xPos between first point and next point; ranInt(p2.x-p1.x)+p1.x
                     float yLine = (p2.y - p1.y) / (p2.x - p1.x) * (xPos - p1.x) + p1.y;
                     int ranY=0;
-                    if(OFFSET>0){
-                        ranY = ran.nextInt(Math.abs(screenWidth-mScaledHeight-(int)yLine))+mScaledHeight;
-                    } else if(OFFSET<0){
-                        ranY = ran.nextInt(Math.abs((int)yLine))+mScaledHeight;
+                    if(OFFSET>0){   //Below traj path
+                        ranY = ran.nextInt(screenHeight-(int)yLine)+2*mScaledHeight;
+                        if(yLine+ranY>screenHeight-mScaledHeight){
+                            i--;
+                            continue;
+                        }
+                    } else if(OFFSET<0){    //Above traj path
+                        ranY = ran.nextInt((int)yLine-2*mScaledHeight);
+                        if(yLine-ranY<mScaledHeight){
+                            i--;
+                            continue;
+                        }
                     }
-
+                    Log.v(TAG,"ranY"+ranY);
                     float yPos = yLine+Math.signum(OFFSET)*ranY; //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
                     Log.v(TAG,"yLine: "+yLine+ "OFFSET: "+OFFSET);
                     newClus.add(new Cluster(type, (int) xPos, (int) yPos, sv));
@@ -129,15 +138,12 @@ public class CosmicFactory implements TimeConscious {
                 j--;
             }
         }
-
-        Log.v(TAG,"ENTERING DRAW");
         for(ArrayList<Cluster> list : clusterList){
             for(Cluster clu : list){
                 //Log.v(TAG, "DRAW");
                 clu.tick(canvas);
             }
         }
-        Log.v(TAG, "Clusters: " + clusterList);
     }
 
     protected void draw ( Canvas c ) {
