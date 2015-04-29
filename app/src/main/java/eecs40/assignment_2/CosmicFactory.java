@@ -13,7 +13,7 @@ public class CosmicFactory implements TimeConscious {
 
     private static final String TAG = "CosmicFactory";
     private int screenWidth, screenHeight, mScaledWidth, mScaledHeight;
-    private int OFFSET = 128; //Bitmap height (same for all bitmaps)
+    private int OFFSET = 1; //Bitmap height (same for all bitmaps)
     private ArrayList<Bitmap> bitmapList;
     private ArrayList<ArrayList<Cluster>> clusterList;
     private Trajectory traj;
@@ -40,15 +40,15 @@ public class CosmicFactory implements TimeConscious {
         mScaledWidth = blackhole.getWidth()/3;
 
         blackhole = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
-        blueplanet = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
-        cloud = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
-        earth = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
-        glossyplanet = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
-        goldenstar = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
-        neutronstar = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
-        shinystar = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
-        star1 = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
-        star2 = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
+        blueplanet = Bitmap.createScaledBitmap(blueplanet, mScaledWidth, mScaledHeight, true);
+        cloud = Bitmap.createScaledBitmap(cloud, mScaledWidth, mScaledHeight, true);
+        earth = Bitmap.createScaledBitmap(earth, mScaledWidth, mScaledHeight, true);
+        glossyplanet = Bitmap.createScaledBitmap(glossyplanet, mScaledWidth, mScaledHeight, true);
+        goldenstar = Bitmap.createScaledBitmap(goldenstar, mScaledWidth, mScaledHeight, true);
+        neutronstar = Bitmap.createScaledBitmap(neutronstar, mScaledWidth, mScaledHeight, true);
+        shinystar = Bitmap.createScaledBitmap(shinystar, mScaledWidth, mScaledHeight, true);
+        star1 = Bitmap.createScaledBitmap(star1, mScaledWidth, mScaledHeight, true);
+        star2 = Bitmap.createScaledBitmap(star2, mScaledWidth, mScaledHeight, true);
 
         bitmapList.add(blackhole);
         bitmapList.add(blueplanet);
@@ -82,27 +82,35 @@ public class CosmicFactory implements TimeConscious {
         // a cluster are of the same type .
         //...
         Log.v(TAG,""+bitmapList.size());
-        if(!(traj.getPoints().isEmpty())) {
+        if(!(traj.getPoints().isEmpty()) && traj.getPoints().size()>1 && (4*screenWidth/3)-traj.getPoints().get(traj.getPoints().size()-1).x>=screenWidth/5) {
             //Log.v(TAG,"CONDITION");
-            for(int h = 0; h<traj.getPoints().size()-1; h++) {
                 ArrayList<Cluster> newClus = new ArrayList<>();
                 Bitmap type = getRanClusType();
                 Random ran = new Random();
-                Point2D p1 = traj.getPoints().get(h);
-                Point2D p2 = traj.getPoints().get(h+1);
-                float xPos = ran.nextInt((int) p2.x - (int) p1.x) + p1.x; //Get xPos between first point and next point; ranInt(p2.x-p1.x)+p1.x
+                Point2D p1 = traj.getPoints().get(traj.getPoints().size()-2);
+                Point2D p2 = traj.getPoints().get(traj.getPoints().size()-1);
 
                 //yPos=yLine+-(ranOffset) -- ranOffset must be bigger than ship dimension (128x128)
                 //Log.v(TAG,"X: "+xPos+" Y: "+yPos);
                 for (int i = 0; i < 10; i++) {
+                    float xPos = ran.nextInt((int) p2.x - (int) p1.x) + p1.x; //Get xPos between first point and next point; ranInt(p2.x-p1.x)+p1.x
                     float yLine = (p2.y - p1.y) / (p2.x - p1.x) * (xPos - p1.x) + p1.y;
-                    float yPos = yLine + 2 * OFFSET; //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
+                    int ranY=0;
+                    if(OFFSET>0){
+                        ranY = ran.nextInt(Math.abs(screenWidth-mScaledHeight-(int)yLine))+mScaledHeight;
+                    } else if(OFFSET<0){
+                        ranY = ran.nextInt(Math.abs((int)yLine+mScaledHeight))+mScaledHeight;
+                    }
+
+                    float yPos = yLine+Math.signum(OFFSET)*ranY; //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
+                    Log.v(TAG,"yLine: "+yLine+ "OFFSET: "+OFFSET);
                     newClus.add(new Cluster(type, (int) xPos, (int) yPos, sv));
                 }
                 clusterList.add(newClus);
                 OFFSET *= -1;   //Alternate between top and bottom of line
-            }
+
         }
+
 
         // Remove cosmic objects ( stars , planets , etc .) that moved out
         // of the scene .
