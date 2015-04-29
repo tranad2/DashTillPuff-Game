@@ -10,6 +10,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     private DashTillPuffRenderThread    renderThread;
     Background bg;
     Trajectory traj;
+    CosmicFactory cos;
     Ship ship;
 
     public DashTillPuffSurfaceView(Context context) {
@@ -26,6 +27,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         // and the space ship
         bg = new Background(this);
         traj = new Trajectory(this);
+        cos = new CosmicFactory(traj,this);
         ship = new Ship(this);
         //...
     }
@@ -61,6 +63,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         // Draw everything ( restricted to the displayed rectangle ) .
         bg.draw(c);
         traj.draw(c);
+        cos.draw(c);
         ship.draw(c);
     }
 
@@ -78,6 +81,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
 
         bg.tick(c);
         traj.tick(c);
+        cos.tick(c);
         ship.tick(c);
     }
 

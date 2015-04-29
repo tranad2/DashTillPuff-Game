@@ -25,6 +25,9 @@ public class Trajectory implements TimeConscious {
         screenHeight = view.getHeight();
     }
 
+    public ArrayList<Point2D> getPoints(){
+        return points;
+    }
     @Override
     public void tick ( Canvas canvas ) {
         // As time ticks , append more points to the trajectory and
