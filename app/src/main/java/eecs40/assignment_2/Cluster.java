@@ -25,11 +25,11 @@ public class Cluster {
         clusHeight = bmp.getHeight();
         x = xPos;
         y = yPos;
-        dst = new Rect( xPos, yPos, xPos+clusWidth, yPos+clusHeight);
+        dst = new Rect( xPos-clusWidth/2, yPos-clusHeight/2, xPos+clusWidth/2, yPos+clusHeight/2);
     }
 
     public void setLocation(int xPos, int yPos){
-        dst.set(xPos, yPos, xPos+clusWidth, yPos+clusHeight);
+        dst.set(xPos-clusWidth/2, yPos-clusHeight/2, xPos+clusWidth/2, yPos+clusHeight/2);
     }
 
     public void tick(Canvas c){
@@ -52,5 +52,6 @@ public class Cluster {
     public String toString(){
         return "("+x+","+y+")";
     }
+
 }
 

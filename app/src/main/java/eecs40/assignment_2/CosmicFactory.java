@@ -84,39 +84,40 @@ public class CosmicFactory implements TimeConscious {
         //...
 
         if(!(traj.getPoints().isEmpty()) && traj.getPoints().size()>1 && (4*screenWidth/3)-traj.getPoints().get(traj.getPoints().size()-1).x>=screenWidth/5) {
-            //Log.v(TAG,"CONDITION");
-                ArrayList<Cluster> newClus = new ArrayList<>();
-                Bitmap type = getRanClusType();
-                Random ran = new Random();
-                Point2D p1 = traj.getPoints().get(traj.getPoints().size()-2);
-                Point2D p2 = traj.getPoints().get(traj.getPoints().size()-1);
+            Log.v(TAG,"CONDITION");
+            ArrayList<Cluster> newClus = new ArrayList<>();
+            Bitmap type = getRanClusType();
+            Random ran = new Random();
+            Point2D p1 = traj.getPoints().get(traj.getPoints().size()-2);
+            Point2D p2 = traj.getPoints().get(traj.getPoints().size()-1);
 
-                //yPos=yLine+-(ranOffset) -- ranOffset must be bigger than ship dimension (128x128)
-                //Log.v(TAG,"X: "+xPos+" Y: "+yPos);
-                for (int i = 0; i < 10; i++) {
-                    float xPos = ran.nextInt((int) p2.x - (int) p1.x) + p1.x; //Get xPos between first point and next point; ranInt(p2.x-p1.x)+p1.x
-                    float yLine = (p2.y - p1.y) / (p2.x - p1.x) * (xPos - p1.x) + p1.y;
-                    int ranY=0;
-                    if(OFFSET>0){   //Below traj path
-                        ranY = ran.nextInt(screenHeight-(int)yLine)+2*mScaledHeight;
-                        if(yLine+ranY>screenHeight-mScaledHeight){
-                            i--;
-                            continue;
-                        }
-                    } else if(OFFSET<0){    //Above traj path
-                        ranY = ran.nextInt((int)yLine-2*mScaledHeight);
-                        if(yLine-ranY<mScaledHeight){
-                            i--;
-                            continue;
-                        }
+            //yPos=yLine+-(ranOffset) -- ranOffset must be bigger than ship dimension (128x128)
+            //Log.v(TAG,"X: "+xPos+" Y: "+yPos);
+            for (int i = 0; i < 10; i++) {
+                float xPos = ran.nextInt((int) p2.x - (int) p1.x) + p1.x; //Get xPos between first point and next point; ranInt(p2.x-p1.x)+p1.x
+                float yLine = (p2.y - p1.y) / (p2.x - p1.x) * (xPos - p1.x) + p1.y;
+                int ranY=0;
+                Log.v(TAG,"Iteration "+i);
+                if(OFFSET>0){   //Below traj path
+                    ranY = ran.nextInt(screenHeight-(int)yLine);
+                    if(yLine+ranY>screenHeight-mScaledHeight){
+                        i--;
+                        continue;
                     }
-                    Log.v(TAG,"ranY"+ranY);
-                    float yPos = yLine+Math.signum(OFFSET)*ranY; //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
-                    Log.v(TAG,"yLine: "+yLine+ "OFFSET: "+OFFSET);
-                    newClus.add(new Cluster(type, (int) xPos, (int) yPos, sv));
+                } else if(OFFSET<0){    //Above traj path
+                    ranY = ran.nextInt((int)yLine);
+                    if(yLine-ranY<mScaledHeight){
+                        i--;
+                        continue;
+                    }
                 }
-                clusterList.add(newClus);
-                Log.v(TAG,"newClus"+newClus);
+                float yPos = yLine+Math.signum(OFFSET)*(ranY+mScaledHeight); //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
+                Log.v(TAG, new Cluster(type, (int) xPos, (int) yPos, sv).toString());
+                newClus.add(new Cluster(type, (int) xPos, (int) yPos, sv));
+            }
+            Log.v(TAG,"isEmpty"+newClus.isEmpty());
+            clusterList.add(newClus);
+            Log.v(TAG,"newClus"+newClus);
             OFFSET *= -1;   //Alternate between top and bottom of line
 
         }
