@@ -72,7 +72,6 @@ public class CosmicFactory implements TimeConscious {
 
     @Override
     public void tick ( Canvas canvas ) {
-        //TODO
         // Create new ‘‘ clusters ’’ of cosmic objects . Alternately place
         // clusters of cosmic objects above and below the guiding
         // trajectory .
@@ -98,9 +97,8 @@ public class CosmicFactory implements TimeConscious {
                 float yLine = (p2.y - p1.y) / (p2.x - p1.x) * (xPos - p1.x) + p1.y;
                 int ranY = 0;
                 Log.v(TAG, "Iteration " + i);
-                if (yLine + mScaledHeight > screenHeight - mScaledHeight || yLine-mScaledHeight<mScaledHeight){
-                    i--;
-                    continue;
+                if ((p1.y + mScaledHeight > screenHeight - mScaledHeight && p2.y + mScaledHeight > screenHeight - mScaledHeight && OFFSET>0) || (p1.y-mScaledHeight<mScaledHeight && p2.y-mScaledHeight<mScaledHeight && OFFSET<0)){
+                    break;
                 }
                 else{
                     if (OFFSET > 0) {   //Below traj path
@@ -135,7 +133,7 @@ public class CosmicFactory implements TimeConscious {
 
         for(int j = 0; j<clusterList.size(); j++){
             for(int k = 0; k<clusterList.get(j).size(); k++){
-                if(clusterList.get(j).get(k).x<0-clusterList.get(j).get(k).clusWidth){
+                if(clusterList.get(j).get(k).getX()<0-clusterList.get(j).get(k).getWidth()){
                     clusterList.get(j).remove(k);
                     k--;
                 }
@@ -151,6 +149,10 @@ public class CosmicFactory implements TimeConscious {
                 clu.tick(canvas);
             }
         }
+    }
+
+    public ArrayList<ArrayList<Cluster>> getClusters(){
+        return clusterList;
     }
 
     protected void draw ( Canvas c ) {

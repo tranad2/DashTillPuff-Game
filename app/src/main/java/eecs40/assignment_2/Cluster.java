@@ -12,10 +12,10 @@ import android.util.Log;
 public class Cluster {
 
     private static final String TAG = "Cluster";
-    float x, y;
-    Bitmap bitmap;
-    int screenWidth, screenHeight, clusWidth, clusHeight;
-    Rect dst;
+    private float x, y;
+    private Bitmap bitmap;
+    private int clusWidth, clusHeight;
+    private Rect dst;
     private float dx=-30f;  //x-velocity of screen
 
 
@@ -33,7 +33,6 @@ public class Cluster {
     }
 
     public void tick(Canvas c){
-        //TODO
         //Update Cluster location
         x+=dx;
         setLocation((int)x, (int)y);
@@ -47,6 +46,22 @@ public class Cluster {
 
     public Rect getRect(){
         return dst;
+    }
+
+    public float getX(){
+        return x;
+    }
+
+    public float getY(){
+        return y;
+    }
+
+    public float getWidth(){
+        return clusWidth;
+    }
+
+    public float getHeight(){
+        return clusHeight;
     }
 
     public String toString(){

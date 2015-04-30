@@ -6,14 +6,16 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
+
 public class Ship implements TimeConscious{
 
-    Bitmap                  bitmapShip;
-    int                     x1, y1, x2, y2, shipWidth, shipHeight, screenWidth, screenHeight;
-    float                   dy;
-    float                   gravity = 10;
-    boolean                 touchFlag;
-    Rect                    dst;
+    private Bitmap bitmapShip;
+    private int x1, y1, x2, y2, shipWidth, shipHeight, screenWidth, screenHeight;
+    private float dy;
+    private float gravity = 10;
+    private Rect dst;
+    private boolean visible, touchFlag;
 
     public Ship( DashTillPuffSurfaceView view ){
         //Load ship bitmap
@@ -35,6 +37,7 @@ public class Ship implements TimeConscious{
         screenWidth = view.getWidth();
         screenHeight = view.getHeight();
         touchFlag = false;
+        visible = true;
     }
 
     public void setLocation( int xPos, int yPos ) {
@@ -67,13 +70,43 @@ public class Ship implements TimeConscious{
             y1 = 0;
             dy = 0;
         }
-
-        setLocation( x1, y1 );
+        setLocation(x1, y1);
         draw( c );
     }
 
     protected void draw( Canvas c ){
-        Paint paint = new Paint();
-        c.drawBitmap ( bitmapShip, null, dst, paint );
+        if(visible) {
+            Paint paint = new Paint();
+            c.drawBitmap(bitmapShip, null, dst, paint);
+        }
+    }
+
+    public Rect getRect(){
+        return dst;
+    }
+
+    public boolean isVisible(){
+        return visible;
+    }
+
+    public void setTouchFlag(boolean val){
+        touchFlag = val;
+    }
+
+    public void setVisible(boolean val){
+        visible = val;
+    }
+
+    public boolean checkCollision(ArrayList<ArrayList<Cluster>> clusterList){
+        boolean collision = false;
+        for(ArrayList<Cluster> subList: clusterList){
+            for(Cluster c : subList){
+                if(dst.intersect(c.getRect())){
+                    collision = true;
+                }
+            }
+
+        }
+        return collision;
     }
 }

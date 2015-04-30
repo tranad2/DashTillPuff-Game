@@ -25,14 +25,14 @@ public class Background implements TimeConscious {
         //Initialize background position
         screenWidth = view.getWidth();
         screenHeight = view.getHeight();
-        this.x1 = 0;
-        this.x2 = screenWidth;
-        this.y1 = 0;
-        this.y2 = screenHeight;
-        this.X1 = this.x2;
-        this.X2 = this.X1 + screenWidth;
-        this.Y1 = 0;
-        this.Y2 = screenHeight;
+        x1 = 0;
+        x2 = screenWidth;
+        y1 = 0;
+        y2 = screenHeight;
+        X1 = this.x2;
+        X2 = this.X1 + screenWidth;
+        Y1 = 0;
+        Y2 = screenHeight;
         dst1 = new Rect( x1, y1, x2, y2 ); // Where to draw .
         dst2 = new Rect( X1, Y1, X2, Y2 );
     }
@@ -52,17 +52,17 @@ public class Background implements TimeConscious {
     }
 
     public void tick( Canvas canvas ) {
-        this.x1 -= 10;
-        this.x2 -= 10;
-        this.X1 -= 10;
-        this.X2 -= 10;
-        if (this.x2 <= 0) {
-            this.x1 = this.X2;
-            this.x2 = this.x1 + screenWidth;
+        x1 -= 10;
+        x2 -= 10;
+        X1 -= 10;
+        X2 -= 10;
+        if (x2 <= 0) {
+            x1 = this.X2;
+            x2 = this.x1 + screenWidth;
         }
         else if (this.X2 <= 0) {
-            this.X1 = this.x2;
-            this.X2 = this.X1 + screenWidth;
+            X1 = this.x2;
+            X2 = this.X1 + screenWidth;
         }
         setLocation( x1, y1, x2, y2, X1, Y1, X2, Y2);
         draw (canvas);

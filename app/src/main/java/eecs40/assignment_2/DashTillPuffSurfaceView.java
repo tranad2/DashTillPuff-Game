@@ -54,10 +54,10 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN: // Thrust the space ship up .
                 startFlag = true;
-                ship.touchFlag = true;
+                ship.setTouchFlag(true);
                 break;
             case MotionEvent.ACTION_UP: // Let space ship fall freely .
-                ship.touchFlag = false;
+                ship.setTouchFlag(false);
                 break;
         }
         return true;
@@ -98,6 +98,14 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
             c.drawText("Tap anywhere to start",getWidth()/2, getHeight()/2, paint);
         }
         else {
+            if(ship.checkCollision(cos.getClusters())){
+                //TODO
+                //Do something with ship visibility
+                //Clear arrays in CosmicFactory and Trajectory
+                //Change gamestate
+                //When back to startFlag, reinitialize everything
+                ship.setVisible(false);
+            }
             traj.tick(c);
             cos.tick(c);
             ship.tick(c);
