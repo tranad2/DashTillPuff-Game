@@ -105,6 +105,12 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
                 //Change gamestate
                 //When back to startFlag, reinitialize everything
                 ship.setVisible(false);
+                if(!ship.isVisible()){
+                    //Go to endscreen
+                }
+                traj=null;
+                cos=null;
+                ship=null;
             }
             traj.tick(c);
             cos.tick(c);
