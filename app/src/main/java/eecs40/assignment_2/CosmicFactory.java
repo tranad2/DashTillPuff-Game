@@ -83,7 +83,7 @@ public class CosmicFactory implements TimeConscious {
         // a cluster are of the same type .
         //...
 
-        if(!(traj.getPoints().isEmpty()) && traj.getPoints().size()>1 && (4*screenWidth/3)-traj.getPoints().get(traj.getPoints().size()-1).x>=screenWidth/5) {
+        if(!(traj.getPoints().isEmpty()) && traj.getPoints().size()>1 && (4*screenWidth/3)-traj.getPoints().get(traj.getPoints().size()-1).x>=screenWidth/3) {
             Log.v(TAG,"CONDITION");
             ArrayList<Cluster> newClus = new ArrayList<>();
             Bitmap type = getRanClusType();
@@ -96,19 +96,25 @@ public class CosmicFactory implements TimeConscious {
             for (int i = 0; i < 10; i++) {
                 float xPos = ran.nextInt((int) p2.x - (int) p1.x) + p1.x; //Get xPos between first point and next point; ranInt(p2.x-p1.x)+p1.x
                 float yLine = (p2.y - p1.y) / (p2.x - p1.x) * (xPos - p1.x) + p1.y;
-                int ranY=0;
-                Log.v(TAG,"Iteration "+i);
-                if(OFFSET>0){   //Below traj path
-                    ranY = ran.nextInt(screenHeight-(int)yLine);
-                    if(yLine+ranY>screenHeight-mScaledHeight){
-                        i--;
-                        continue;
-                    }
-                } else if(OFFSET<0){    //Above traj path
-                    ranY = ran.nextInt((int)yLine);
-                    if(yLine-ranY<mScaledHeight){
-                        i--;
-                        continue;
+                int ranY = 0;
+                Log.v(TAG, "Iteration " + i);
+                if (yLine + mScaledHeight > screenHeight - mScaledHeight || yLine-mScaledHeight<mScaledHeight){
+                    i--;
+                    continue;
+                }
+                else{
+                    if (OFFSET > 0) {   //Below traj path
+                        ranY = ran.nextInt(screenHeight - (int) yLine);
+                        if (yLine + ranY + mScaledHeight > screenHeight - mScaledHeight) {
+                            i--;
+                            continue;
+                        }
+                    } else if (OFFSET < 0) {    //Above traj path
+                        ranY = ran.nextInt((int) yLine);
+                        if (yLine - ranY - mScaledHeight < mScaledHeight) {
+                            i--;
+                            continue;
+                        }
                     }
                 }
                 float yPos = yLine+Math.signum(OFFSET)*(ranY+mScaledHeight); //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
