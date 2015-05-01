@@ -52,15 +52,15 @@ public class Background implements TimeConscious {
     }
 
     public void tick( Canvas canvas ) {
-        x1 -= 10;
-        x2 -= 10;
-        X1 -= 10;
-        X2 -= 10;
+        x1 -= 20;
+        x2 -= 20;
+        X1 -= 20;
+        X2 -= 20;
         if (x2 <= 0) {
             x1 = this.X2;
             x2 = this.x1 + screenWidth;
         }
-        else if (this.X2 <= 0) {
+            else if (this.X2 <= 0) {
             X1 = this.x2;
             X2 = this.X1 + screenWidth;
         }

@@ -16,7 +16,7 @@ public class Cluster {
     private Bitmap bitmap;
     private int clusWidth, clusHeight;
     private Rect dst;
-    private float dx=-30f;  //x-velocity of screen
+    private float dx=-20f;  //x-velocity of screen
 
 
     public Cluster(Bitmap bmp, int xPos, int yPos, DashTillPuffSurfaceView view){

@@ -18,7 +18,7 @@ public class Trajectory implements TimeConscious {
     private ArrayList<Point2D> points = new ArrayList<>();
     private float screenWidth;
     private float screenHeight;
-    private float dx=-30f;  //x-velocity of screen
+    private float dx=-20f;  //x-velocity of screen
 
     public Trajectory(View view){
         screenWidth = view.getWidth();

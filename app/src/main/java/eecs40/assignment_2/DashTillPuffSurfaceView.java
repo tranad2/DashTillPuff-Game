@@ -15,7 +15,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     Trajectory traj;
     Ship ship;
     CosmicFactory cos;
-    boolean startFlag = false;
+    int gameState;  //0 = start screen, 1 = game screen, 2 = game over screen
     int score;
 
     public DashTillPuffSurfaceView(Context context) {
@@ -53,8 +53,16 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN: // Thrust the space ship up .
-                startFlag = true;
+                if (gameState == 2){
+                    //Restart game
+                    //ship.setVisible(true);
+                    gameState = 1;
+                    ship.setVisible(true);
+                    score = 0;
+                }
                 ship.setTouchFlag(true);
+                gameState = 1;
+
                 break;
             case MotionEvent.ACTION_UP: // Let space ship fall freely .
                 ship.setTouchFlag(false);
@@ -69,7 +77,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         // Draw everything ( restricted to the displayed rectangle ) .
 
         bg.draw(c);
-        if ( startFlag ) {
+        if ( gameState == 1 ) {
             traj.draw(c);
             cos.draw(c);
             ship.draw(c);
@@ -89,7 +97,7 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
         c.drawPaint ( paint ) ;*/
 
         bg.tick(c);
-        if (!startFlag) {
+        if ( gameState == 0) {
             Paint paint = new Paint();
             paint.setTextSize(getWidth()/12);
             paint.setColor(Color.WHITE);
@@ -97,26 +105,28 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
             paint.setTypeface(Typeface.DEFAULT_BOLD);
             c.drawText("Tap anywhere to start",getWidth()/2, getHeight()/2, paint);
         }
-        else {
-            if(ship.checkCollision(cos.getClusters())){
-                //TODO
-                //Do something with ship visibility
-                //Clear arrays in CosmicFactory and Trajectory
-                //Change gamestate
-                //When back to startFlag, reinitialize everything
-                ship.setVisible(false);
-                if(!ship.isVisible()){
-                    //Go to endscreen
-                }
-                traj=null;
-                cos=null;
-                ship=null;
-            }
+        if ( gameState == 1 ) {
             traj.tick(c);
             cos.tick(c);
             ship.tick(c);
             drawScore(c);
             score++;
+        }
+        if (ship.checkCollision(cos.getClusters())) {
+            gameState = 2;
+        }
+        if ( gameState == 2 ) {
+            Paint paint = new Paint();
+            paint.setTextSize(getWidth() / 12);
+            paint.setColor(Color.WHITE);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTypeface(Typeface.DEFAULT_BOLD);
+            c.drawText("Game Over", getWidth() / 2, 2 * getHeight() / 5, paint);
+            c.drawText("Tap anywhere to restart", getWidth() / 2, 3 * getHeight() / 5, paint);
+            ship.setVisible(false);
+            traj.getPoints().clear();
+            cos.getClusters().clear();
+            ship.setLocation(this.getWidth()/4, this.getHeight()/2);
         }
     }
 

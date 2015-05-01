@@ -13,7 +13,7 @@ public class Ship implements TimeConscious{
     private Bitmap bitmapShip;
     private int x1, y1, x2, y2, shipWidth, shipHeight, screenWidth, screenHeight;
     private float dy;
-    private float gravity = 10;
+    private float gravity = 5;
     private Rect dst;
     private boolean visible, touchFlag;
 
@@ -23,8 +23,8 @@ public class Ship implements TimeConscious{
         bitmapShip = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffspaceship, options);
 
         //Scale ship bitmap
-        shipWidth   = bitmapShip.getWidth() / 3;
-        shipHeight  = bitmapShip.getHeight() / 3;
+        shipWidth   = bitmapShip.getWidth() / 4;
+        shipHeight  = bitmapShip.getHeight() / 4;
         bitmapShip  = Bitmap.createScaledBitmap(bitmapShip, shipWidth, shipHeight, true);
 
         //Initialize ship position
