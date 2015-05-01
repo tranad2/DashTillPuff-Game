@@ -41,7 +41,7 @@ public class Trajectory implements TimeConscious {
         }
         else{
             //Create new points offscreen only when x-distance is greater than distant between screenWidth+OFFSET and last point
-            if((screenWidth+OFFSET)-points.get(points.size()-1).x>=screenWidth/3) {
+            if((screenWidth+2*OFFSET)-points.get(points.size()-1).x>=screenWidth/3) {
                 Random ran = new Random();
                 float xPos = points.get(points.size() - 1).x + OFFSET;
                 float yPos = (float) ran.nextInt((int) screenHeight);

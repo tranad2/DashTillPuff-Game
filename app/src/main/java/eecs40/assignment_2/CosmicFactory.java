@@ -82,7 +82,7 @@ public class CosmicFactory implements TimeConscious {
         // a cluster are of the same type .
         //...
 
-        if(!(traj.getPoints().isEmpty()) && traj.getPoints().size()>1 && (4*screenWidth/3)-traj.getPoints().get(traj.getPoints().size()-1).x>=screenWidth/3) {
+        if(!(traj.getPoints().isEmpty()) && traj.getPoints().size()>1 && (5*screenWidth/3)-traj.getPoints().get(traj.getPoints().size()-1).x>=screenWidth/3) {
             Log.v(TAG,"CONDITION");
             ArrayList<Cluster> newClus = new ArrayList<>();
             Bitmap type = getRanClusType();
@@ -115,7 +115,7 @@ public class CosmicFactory implements TimeConscious {
                         }
                     }
                 }
-                float yPos = yLine+Math.signum(OFFSET)*(ranY+mScaledHeight); //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
+                float yPos = yLine+Math.signum(OFFSET)*(ranY+1.5f*mScaledHeight); //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
                 Log.v(TAG, new Cluster(type, (int) xPos, (int) yPos, sv).toString());
                 newClus.add(new Cluster(type, (int) xPos, (int) yPos, sv));
             }
