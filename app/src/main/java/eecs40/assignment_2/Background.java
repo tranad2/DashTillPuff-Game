@@ -6,11 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-
 public class Background implements TimeConscious {
 
     Bitmap                  bitmap;
-    BitmapFactory.Options options = new BitmapFactory.Options();
+    BitmapFactory.Options   options = new BitmapFactory.Options();
     public  int             x1, X1;
     public  int             x2, X2;
     public  int             y1, Y1;
@@ -33,7 +32,9 @@ public class Background implements TimeConscious {
         X2 = this.X1 + screenWidth;
         Y1 = 0;
         Y2 = screenHeight;
-        dst1 = new Rect( x1, y1, x2, y2 ); // Where to draw .
+
+        //Initialize rectanges for drawing
+        dst1 = new Rect( x1, y1, x2, y2 );
         dst2 = new Rect( X1, Y1, X2, Y2 );
     }
 
@@ -52,10 +53,13 @@ public class Background implements TimeConscious {
     }
 
     public void tick( Canvas canvas ) {
+        //Set background scrolling speed
         x1 -= 20;
         x2 -= 20;
         X1 -= 20;
         X2 -= 20;
+
+        //Looping background algorithm
         if (x2 <= 0) {
             x1 = this.X2;
             x2 = this.x1 + screenWidth;

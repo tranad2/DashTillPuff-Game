@@ -115,7 +115,7 @@ public class CosmicFactory implements TimeConscious {
                         }
                     }
                 }
-                float yPos = yLine+Math.signum(OFFSET)*(ranY+1.5f*mScaledHeight); //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
+                float yPos = yLine+Math.signum(OFFSET)*(ranY+1.75f*mScaledHeight); //Slope formula; yLine = (p2.y-p1.y)/(p2.x-p1.x)*(xPos-p1.x)+p1.y
                 Log.v(TAG, new Cluster(type, (int) xPos, (int) yPos, sv).toString());
                 newClus.add(new Cluster(type, (int) xPos, (int) yPos, sv));
             }

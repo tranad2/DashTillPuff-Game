@@ -11,12 +11,13 @@ import android.view.SurfaceView;
 
 public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolder.Callback, TimeConscious {
     private DashTillPuffRenderThread    renderThread;
-    Background bg;
-    Trajectory traj;
+    Background background;
+    Trajectory trajectory;
     Ship ship;
-    CosmicFactory cos;
-    int gameState;  //0 = start screen, 1 = game screen, 2 = game over screen
+    CosmicFactory cosmos;
+    int gameState = 0;  //0 = start screen, 1 = game screen, 2 = game over screen
     int score;
+    int hiScore = 0;
 
     public DashTillPuffSurfaceView(Context context) {
         super(context);
@@ -27,14 +28,10 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     public void surfaceCreated(SurfaceHolder holder) {
         renderThread = new DashTillPuffRenderThread( this );
         renderThread.start();
-        //...
-        // Create the sliding background , cosmic factory , trajectory
-        // and the space ship
-        bg = new Background(this);
-        traj = new Trajectory(this);
+        background = new Background(this);
+        trajectory = new Trajectory(this);
         ship = new Ship(this);
-        cos = new CosmicFactory(traj, this);
-        //...
+        cosmos = new CosmicFactory(trajectory, this);
     }
 
     @Override
@@ -52,19 +49,18 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN: // Thrust the space ship up .
-                if (gameState == 2){
-                    //Restart game
-                    //ship.setVisible(true);
+            case MotionEvent.ACTION_DOWN: // Thrust the space ship up
+                if (gameState == 2){    //If game over, restart game on touch
                     gameState = 1;
+                    ship.resetVelocity();
                     ship.setVisible(true);
                     score = 0;
                 }
-                ship.setTouchFlag(true);
                 gameState = 1;
-
+                ship.setTouchFlag(true);
                 break;
-            case MotionEvent.ACTION_UP: // Let space ship fall freely .
+
+            case MotionEvent.ACTION_UP: // Let space ship fall freely
                 ship.setTouchFlag(false);
                 break;
         }
@@ -74,48 +70,48 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
     @Override
     public void onDraw(Canvas c) {
         super.onDraw(c);
-        // Draw everything ( restricted to the displayed rectangle ) .
-
-        bg.draw(c);
-        if ( gameState == 1 ) {
-            traj.draw(c);
-            cos.draw(c);
+        background.draw(c);
+        if ( gameState == 1 ) {     //If not in main game state, don't draw
+            trajectory.draw(c);
+            cosmos.draw(c);
             ship.draw(c);
         }
     }
 
     @Override
     public void tick( Canvas c ) {
-        // Tick background , space ship , cosmic factory , and trajectory .
-        // Draw everything ( restricted to the displayed rectangle ) .
+        background.tick(c);
 
-        // Lag debug
-        /*Paint paint = new Paint () ;
-        paint.setStyle ( Paint. Style . FILL ) ;
-        paint.setColor ( Color. WHITE ) ;
-        paint.setAntiAlias ( true ) ;
-        c.drawPaint ( paint ) ;*/
-
-        bg.tick(c);
+        //Start screen
         if ( gameState == 0) {
             Paint paint = new Paint();
             paint.setTextSize(getWidth()/12);
             paint.setColor(Color.WHITE);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTypeface(Typeface.DEFAULT_BOLD);
-            c.drawText("Tap anywhere to start",getWidth()/2, getHeight()/2, paint);
+            c.drawText("Tap anywhere to start", getWidth()/2, getHeight()/2, paint);
         }
+
+        //Main game screen
         if ( gameState == 1 ) {
-            traj.tick(c);
-            cos.tick(c);
+            trajectory.tick(c);
+            cosmos.tick(c);
             ship.tick(c);
             drawScore(c);
             score++;
+            if (score > hiScore) {
+                hiScore = score;
+            }
         }
-        if (ship.checkCollision(cos.getClusters())) {
+
+        //Check collisions
+        if (ship.checkCollision(cosmos.getClusters())) {
             gameState = 2;
         }
+
+        //Game over screen
         if ( gameState == 2 ) {
+            drawScore(c);
             Paint paint = new Paint();
             paint.setTextSize(getWidth() / 12);
             paint.setColor(Color.WHITE);
@@ -123,20 +119,28 @@ public class DashTillPuffSurfaceView extends SurfaceView implements SurfaceHolde
             paint.setTypeface(Typeface.DEFAULT_BOLD);
             c.drawText("Game Over", getWidth() / 2, 2 * getHeight() / 5, paint);
             c.drawText("Tap anywhere to restart", getWidth() / 2, 3 * getHeight() / 5, paint);
+
+            //Clear game data
             ship.setVisible(false);
-            traj.getPoints().clear();
-            cos.getClusters().clear();
+            trajectory.getPoints().clear();
+            cosmos.getClusters().clear();
             ship.setLocation(this.getWidth()/4, this.getHeight()/2);
         }
     }
 
     protected void drawScore( Canvas c ) {
-        Paint paint = new Paint() ;
-        paint.setTextSize(getWidth()/12);
-        paint.setColor(Color.WHITE);
-        paint.setTextAlign(Paint.Align.RIGHT);
-        paint.setTypeface(Typeface.DEFAULT_BOLD);
-        c.drawText(Integer.toString(score/10),getWidth(), getHeight()/8, paint);
+        Paint paint1 = new Paint() ;
+        paint1.setTextSize(getWidth()/24);
+        paint1.setColor(Color.WHITE);
+        paint1.setTextAlign(Paint.Align.LEFT);
+        paint1.setTypeface(Typeface.DEFAULT_BOLD);
+        c.drawText("Score: " + Integer.toString(score/10), 0, getHeight()/14, paint1);    //10 ticks = 1 point
+        Paint paint2 = new Paint() ;
+        paint2.setTextSize(getWidth() / 24);
+        paint2.setColor(Color.WHITE);
+        paint2.setTextAlign(Paint.Align.RIGHT);
+        paint2.setTypeface(Typeface.DEFAULT_BOLD);
+        c.drawText("Hi Score: " + Integer.toString(hiScore/10), getWidth(), getHeight()/14, paint2);
     }
 
 }

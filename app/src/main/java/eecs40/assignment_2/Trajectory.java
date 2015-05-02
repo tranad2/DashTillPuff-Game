@@ -76,9 +76,9 @@ public class Trajectory implements TimeConscious {
         Paint paint = new Paint ();
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.CYAN);
-        paint.setStrokeWidth(10);
+        paint.setStrokeWidth(15);
         paint.setPathEffect(new DashPathEffect(new float[] {100,50}, 0));
-        paint.setAlpha(255);
+        paint.setAlpha(127);
         paint.setAntiAlias(true);
         c.drawPath( path, paint );
     }
