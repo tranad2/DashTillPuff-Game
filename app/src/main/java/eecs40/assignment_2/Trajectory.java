@@ -58,7 +58,6 @@ public class Trajectory implements TimeConscious {
             points.get(i).x+=dx;
         }
 
-        //Log.v(TAG,""+points);
         draw ( canvas ) ;
     }
 

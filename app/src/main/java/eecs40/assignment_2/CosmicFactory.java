@@ -37,7 +37,7 @@ public class CosmicFactory implements TimeConscious {
         star1 = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffstar1, options);
         star2 = BitmapFactory.decodeResource(view.getResources(), R.drawable.dashtillpuffstar2, options);
 
-        mScaledHeight = blackhole.getHeight()/3;    //Reuse scaled width/height with same bitmaps
+        mScaledHeight = blackhole.getHeight()/3;    //Reuse scaled width/height with same-dimension bitmaps
         mScaledWidth = blackhole.getWidth()/3;
 
         blackhole = Bitmap.createScaledBitmap(blackhole, mScaledWidth, mScaledHeight, true);
@@ -75,29 +75,24 @@ public class CosmicFactory implements TimeConscious {
         // Create new ‘‘ clusters ’’ of cosmic objects . Alternately place
         // clusters of cosmic objects above and below the guiding
         // trajectory .
-        //...
 
         // Randomly select the type of cluster objects from a list
         // ( e . g . , stars , clouds , planets , etc .) . So all objects in
         // a cluster are of the same type .
-        //...
 
         if(!(traj.getPoints().isEmpty()) && traj.getPoints().size()>1 && (5*screenWidth/3)-traj.getPoints().get(traj.getPoints().size()-1).x>=screenWidth/3) {
-            Log.v(TAG,"CONDITION");
             ArrayList<Cluster> newClus = new ArrayList<>();
             Bitmap type = getRanClusType();
             Random ran = new Random();
             Point2D p1 = traj.getPoints().get(traj.getPoints().size()-2);
             Point2D p2 = traj.getPoints().get(traj.getPoints().size()-1);
 
-            //yPos=yLine+-(ranOffset) -- ranOffset must be bigger than ship dimension (128x128)
-            //Log.v(TAG,"X: "+xPos+" Y: "+yPos);
             for (int i = 0; i < 10; i++) {
                 float xPos = ran.nextInt((int) p2.x - (int) p1.x) + p1.x; //Get xPos between first point and next point; ranInt(p2.x-p1.x)+p1.x
-                float yLine = (p2.y - p1.y) / (p2.x - p1.x) * (xPos - p1.x) + p1.y;
+                float yLine = (p2.y - p1.y) / (p2.x - p1.x) * (xPos - p1.x) + p1.y; //Slope formula
                 int ranY = 0;
-                Log.v(TAG, "Iteration " + i);
                 if ((p1.y + mScaledHeight > screenHeight - mScaledHeight && p2.y + mScaledHeight > screenHeight - mScaledHeight && OFFSET>0) || (p1.y-mScaledHeight<mScaledHeight && p2.y-mScaledHeight<mScaledHeight && OFFSET<0)){
+                    //Do not make Cluster if dimension does not fit between line and screen border
                     break;
                 }
                 else{
@@ -128,9 +123,7 @@ public class CosmicFactory implements TimeConscious {
 
 
         // Remove cosmic objects ( stars , planets , etc .) that moved out
-        // of the scene .
-        //...
-
+        // of the scene.
         for(int j = 0; j<clusterList.size(); j++){
             for(int k = 0; k<clusterList.get(j).size(); k++){
                 if(clusterList.get(j).get(k).getX()<0-clusterList.get(j).get(k).getWidth()){
@@ -143,9 +136,9 @@ public class CosmicFactory implements TimeConscious {
                 j--;
             }
         }
+
         for(ArrayList<Cluster> list : clusterList){
             for(Cluster clu : list){
-                //Log.v(TAG, "DRAW");
                 clu.tick(canvas);
             }
         }
@@ -156,7 +149,6 @@ public class CosmicFactory implements TimeConscious {
     }
 
     protected void draw ( Canvas c ) {
-        //Call Clusters draw()
         for(ArrayList<Cluster> list : clusterList){
             for(Cluster clu : list){
                 clu.draw(c);

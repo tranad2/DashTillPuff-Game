@@ -28,6 +28,7 @@ public class Cluster {
         dst = new Rect( xPos-clusWidth/2, yPos-clusHeight/2, xPos+clusWidth/2, yPos+clusHeight/2);
     }
 
+    //Change cluster x-position and y-position
     public void setLocation(int xPos, int yPos){
         dst.set(xPos-clusWidth/2, yPos-clusHeight/2, xPos+clusWidth/2, yPos+clusHeight/2);
     }
@@ -44,26 +45,32 @@ public class Cluster {
         c.drawBitmap ( bitmap, null, dst, paint );
     }
 
+    //@return Cluster's Rectangle location
     public Rect getRect(){
         return dst;
     }
 
+    //@return Cluster's top left Rectangle x-coordinate
     public float getX(){
         return x;
     }
 
+    //@return Cluster's top left Rectangle y-coordinate
     public float getY(){
         return y;
     }
 
+    //@return Cluster's Rectangle width
     public float getWidth(){
         return clusWidth;
     }
 
+    //@return Cluster's Rectangle height
     public float getHeight(){
         return clusHeight;
     }
 
+    //@return Cluster's position in String format
     public String toString(){
         return "("+x+","+y+")";
     }
